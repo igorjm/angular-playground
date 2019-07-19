@@ -1,4 +1,6 @@
-class Negociacoes {
+import {Negociacao} from './Negociacao';
+
+export class Negociacoes {
 
     private _negociacoes: Array<Negociacao> = []; // ou
     // private _negociacoes: Negociacao[] = [];
@@ -8,6 +10,6 @@ class Negociacoes {
     }
 
     toArray(): Negociacao[] {
-        return [].concat(this._negociacoes);
+        return ([] as Negociacao[]).concat(this._negociacoes);
     }
 }
