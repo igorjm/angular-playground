@@ -1,22 +1,28 @@
 import {NegociacoesView, MensagemView} from '../views/index';
 import {Negociacoes, Negociacao} from '../models/index';
+import { logarTempoDeExecucao } from '../helpers/decorators/index';
+import { domInject } from '../helpers/decorators/index';
 
 export class NegociacaoController {
 
+    @domInject('#data')
     private _inputData: JQuery;
+
+    @domInject('#quantidade')
     private _inputQuantidade: JQuery;
+
+    @domInject('#valor')
     private _inputValor: JQuery;
+
     private _negociacoes = new Negociacoes();
     private _negociacoesView = new NegociacoesView('#negociacoesView');
     private _mensagemView = new MensagemView('#mensagemView');
 
-    constructor(){
-        this._inputData = $('#data');
-        this._inputQuantidade = $('#quantidade');
-        this._inputValor = $('#valor');
+    constructor() {
         this._negociacoesView.update(this._negociacoes);
     }
 
+    @logarTempoDeExecucao()
     adiciona(event: Event) {
         event.preventDefault();
 
@@ -40,6 +46,27 @@ export class NegociacaoController {
 
     private _isUtilDay(data: Date) {
         return data.getDay() != DiaDaSemana.Sabado && data.getDay() != DiaDaSemana.Domingo;
+    }
+
+    importaDados() {
+        function isOk(res: Response) {
+            if (res.ok) {
+                return res;
+            } else {
+                throw new Error(res.statusText);
+            }
+        }
+    
+        fetch('http://localhost:8080/dados')
+            .then(res => isOk(res))
+            .then(res => res.json())
+            .then((dados: any[]) => {
+                dados
+                    .map(dado => new Negociacao(new Date(), dado.vezes, dado.montante))
+                    .forEach(negociacao => this._negociacoes.adiciona(negociacao))
+                this._negociacoesView.update(this._negociacoes);
+                })
+            .catch(err => console.log(err.message));
     }
 }
 
