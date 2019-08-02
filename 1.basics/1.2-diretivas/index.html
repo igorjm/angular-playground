@@ -26,19 +26,19 @@
     <script src="lib/angular-1.7.8/angular-messages.js"></script>
     <script>
         angular.module("listaTelefonica", ["ngMessages"]);
-        angular.module("listaTelefonica").controller("listaTelefonicaController", function ($scope) {
+        angular.module("listaTelefonica").controller("listaTelefonicaController", function ($scope, $filter) {
             $scope.app = "Lista Telefonica";
             $scope.contatos = [
-                {nome: "Pedro", telefone: "99998888", data: new Date(), operadora: {nome: "Oi", codigo: 14, categoria: "Celular"}, color: "blue"},
+                {nome: $filter('uppercase')("Pedro"), telefone: "99998888", data: new Date(), operadora: {nome: "Oi", codigo: 14, categoria: "Celular"}, color: "blue"},
                 {nome: "Ana", telefone: "99998877", data: new Date(), operadora: {nome: "Vivo", codigo: 15, categoria: "Celular"}, color: "yellow"},
                 {nome: "Maria", telefone: "99887766", data: new Date(), operadora: {nome: "Tim", codigo: 41, categoria: "Celular"}, color: "red"},
             ];
             $scope.operadoras = [
-                {nome: "Oi", codigo: 14, categoria: "Celular"},
-                {nome: "Vivo", codigo: 15, categoria: "Celular"},
-                {nome: "TIM", codigo: 41, categoria: "Celular"},
-                {nome: "GVT", codigo: 25, categoria: "Fixo"},
-                {nome: "Embratel", codigo: 21, categoria: "Fixo"},
+                {nome: "Oi", codigo: 14, categoria: "Celular", preco: 2},
+                {nome: "Vivo", codigo: 15, categoria: "Celular", preco: 1},
+                {nome: "TIM", codigo: 41, categoria: "Celular", preco: 3},
+                {nome: "GVT", codigo: 25, categoria: "Fixo", preco: 2},
+                {nome: "Embratel", codigo: 21, categoria: "Fixo", preco: 3},
             ];
             $scope.adicionarContato = function (contato) {
                 $scope.contatos.push(angular.copy(contato));
@@ -101,7 +101,8 @@
                 <option value="">Selecione uma Operadora</option>
             </select>
         </form>
-        <div ng-messages="contatoForm.nome.$error" class="alert alert-danger">
+        
+        <div ng-show="contatoForm.nome.$dirty" ng-messages="contatoForm.nome.$error" class="alert alert-danger">
             <div ng-messages="required">
                 Por favor, preencha o campo nome!
             </div>
