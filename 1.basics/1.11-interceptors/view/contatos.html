@@ -1,0 +1,44 @@
+<div class="jumbotron">
+    <ui-accordions>
+        <ui-accordion title="Accordion 1">
+            Texto 1
+        </ui-accordion>
+        <ui-accordion title="Accordion 2">
+            Texto 2
+        </ui-accordion>
+    </ui-accordions>
+
+    <input class="form-control" type="text" ng-model="criterioDeBusca" placeholder="O que voce esta buscando?">
+    <table ng-show="contatos.length > 0" class="table table-striped">
+        <tr>
+            <th></th>
+            <th>Serial</th>
+            <th><a href="" ng-click="ordernarPor('nome')">Nome</a></th>
+            <th><a href="" ng-click="ordernarPor('telefone')">Telefone</a></th>
+            <th>Operadora</th>
+            <th>Data</th>
+        </tr>
+        <tr ng-class="{selecionado: contato.selecionado}" ng-repeat="contato in contatos | filter: criterioDeBusca | orderBy: criterioDeOrdenacao:direcaoDaOrdenacao">
+            <td><input type="checkbox" ng-model="contato.selecionado"/></td>
+            <td>{{contato.serial}}</td>
+            <td><a href="#/detalhes/{{contato.id}}"> {{ contato.nome | name }} </a></td>
+            <td>{{contato.telefone}}</td>
+            <td>{{contato.operadora.nome}}</td>
+            <!-- ou -->
+            <!-- <td ng-repeat="(key, value) in contato">
+                {{value}}
+            </td> -->
+            <!-- <td><div style="width: 20px; height: 20px;" ng-style="{'background-color': contato.color}"></div></td> -->
+            <td>{{contato.data | date: 'dd/MM/yyyy HH:mm'}}</td>
+        </tr>
+    </table>
+    <hr>
+    <a class="btn btn-primary btn-block" href="#/novoContato">Novo contato</a>    
+    <button
+        class="btn btn-danger btn-block" 
+        ng-click="apagarContato(contatos)"
+        //ng-disabled="!isContatoSelecionado(contatos)"
+        //ng-show="isContatoSelecionado(contatos)"
+        ng-if="isContatoSelecionado(contatos)" //+Performance
+    >Apagar Contato</button>
+</div>
