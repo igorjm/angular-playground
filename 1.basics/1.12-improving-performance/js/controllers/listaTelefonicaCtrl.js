@@ -1,5 +1,5 @@
-angular.module("listaTelefonica").controller("listaTelefonicaController", function ($scope, contatos, operadoras, serialGenerator) {
-    $scope.app = "Lista Telefonica";
+angular.module("listaTelefonica").controller("listaTelefonicaController", function ($scope, contatos, operadoras, serialGenerator, $filter) {
+    $scope.app = $filter('upper')("Lista Telefonica");
     $scope.contatos = contatos.data;
     $scope.operadoras = operadoras.data;
 
@@ -8,7 +8,7 @@ angular.module("listaTelefonica").controller("listaTelefonicaController", functi
         generateSerial($scope.contatos);
     }
 
-    var calcularImpostos = function(impostos) {
+    var calcularImpostos = function(contatos) {
         contatos.forEach(function (contato) {
             contato.operadora.precoComImposto = calcularImposto(contato.operadora.preco);
         });

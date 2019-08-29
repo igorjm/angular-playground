@@ -1,13 +1,13 @@
 <div class="jumbotron">
-    <ui-accordions>
+    <!-- <ui-accordions>
         <ui-accordion title="Accordion 1">
             Texto 1
         </ui-accordion>
         <ui-accordion title="Accordion 2">
             Texto 2
         </ui-accordion>
-    </ui-accordions>
-
+    </ui-accordions> -->
+    {{app}}
     <input class="form-control" type="text" ng-model="criterioDeBusca" ng-model-options="{updateOn:'default blur', debounce:{default:500, blur: 0}}" placeholder="O que voce esta buscando?">
     <table ng-show="contatos.length > 0" class="table table-striped">
         <tr>
@@ -19,7 +19,7 @@
             <th>Preço</th>
             <th>Data</th>
         </tr>
-        <tr ng-class="{selecionado: contato.selecionado}" ng-repeat="contato in contatos | filter: criterioDeBusca | orderBy: criterioDeOrdenacao:direcaoDaOrdenacao">
+        <tr ng-class="{selecionado: contato.selecionado}" ng-repeat="contato in contatos | filter: criterioDeBusca | orderBy: criterioDeOrdenacao:direcaoDaOrdenacao track by contato.id">
             <td><input type="checkbox" ng-model="contato.selecionado" ng-click="verificarContatoSelecionado(contatos)"/></td>
             <td>{{::contato.serial}}</td>
             <td><a href="#/detalhes/{{contato.id}}"> {{::contato.nome | name }} </a></td>
